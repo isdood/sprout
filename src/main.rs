@@ -6,6 +6,7 @@ use winit::{
 use wgpu::util::DeviceExt;
 use std::process::Command;
 use crate::theme::Theme;
+use tauri::Manager;
 
 async fn run(event_loop: EventLoop<()>, window: winit::window::Window, theme: &Theme) {
     let size = window.inner_size();
@@ -103,6 +104,29 @@ fn main() {
         .arg("your_game_id")
         .spawn()
         .expect("Failed to launch Steam game");
+
+    // Tauri initialization
+    tauri::Builder::default()
+        .setup(|app| {
+            let main_window = app.get_window("main").unwrap();
+            main_window.set_title("Sprout Browser").unwrap();
+            Ok(())
+        })
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
+
+    // Platform-specific code for Android and iOS
+    #[cfg(target_os = "android")]
+    {
+        // Android-specific code
+        println!("Running on Android");
+    }
+
+    #[cfg(target_os = "ios")]
+    {
+        // iOS-specific code
+        println!("Running on iOS");
+    }
 
     pollster::block_on(run(event_loop, window, &theme));
 }
