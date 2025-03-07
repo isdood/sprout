@@ -13,6 +13,9 @@ Sprout allows you to launch a Steam game within the browser as if it were a nati
 ## Evolving Theme Engine
 Sprout features an evolving theme engine that automatically picks up on your palette choices and preferences. Over time, the browser will adapt and mold itself into the perfect tool (theme-wise) for every user.
 
+## Android Virtualizer
+Sprout includes an Android Virtualizer feature that allows you to virtualize and save an instance of Android within the browser. This enables you to near-natively download and utilize apps from the Play Store on practically any device, as long as Sprout is the browser being used.
+
 ## Installation Instructions
 
 ### Arch Linux
