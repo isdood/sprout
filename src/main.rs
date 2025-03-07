@@ -5,8 +5,9 @@ use winit::{
 };
 use wgpu::util::DeviceExt;
 use std::process::Command;
+use crate::theme::Theme;
 
-async fn run(event_loop: EventLoop<()>, window: winit::window::Window) {
+async fn run(event_loop: EventLoop<()>, window: winit::window::Window, theme: &Theme) {
     let size = window.inner_size();
 
     let instance = wgpu::Instance::new(wgpu::Backends::all());
@@ -68,7 +69,12 @@ async fn run(event_loop: EventLoop<()>, window: winit::window::Window) {
                             view: &view,
                             resolve_target: None,
                             ops: wgpu::Operations {
-                                load: wgpu::LoadOp::Clear(wgpu::Color::BLACK),
+                                load: wgpu::LoadOp::Clear(wgpu::Color {
+                                    r: theme.background.red as f64,
+                                    g: theme.background.green as f64,
+                                    b: theme.background.blue as f64,
+                                    a: 1.0,
+                                }),
                                 store: true,
                             },
                         }],
@@ -88,6 +94,9 @@ fn main() {
     let event_loop = EventLoop::new();
     let window = WindowBuilder::new().build(&event_loop).unwrap();
 
+    // Initialize theme
+    let theme = Theme::new();
+
     // Launch a Steam game within the browser
     Command::new("steam")
         .arg("-applaunch")
@@ -95,5 +104,5 @@ fn main() {
         .spawn()
         .expect("Failed to launch Steam game");
 
-    pollster::block_on(run(event_loop, window));
+    pollster::block_on(run(event_loop, window, &theme));
 }
